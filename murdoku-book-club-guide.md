@@ -94,6 +94,15 @@ Different puzzles use different objects. Common ones include:
 
 All of these objects only matter because clues refer to them. If no clue mentions "garbage can," that object is irrelevant. Focus on what the clues actually say. When in doubt, **hover over a cell** to see its tooltip label.
 
+### Occupiable vs. Blocked Cells
+
+Not every cell on the grid can hold a suspect. There are two kinds:
+
+- **Occupiable cells** — a suspect can be placed here. This includes open floor cells and cells containing small objects like chairs or carpets. When a clue says "sitting in a chair," the suspect is placed directly in the chair cell.
+- **Blocked cells** — a large object fills the entire cell and no suspect can be placed there. Examples: trees, large rocks that fill the cell completely. These cells still appear on the grid and can be referenced in clues ("beside the tree"), but are never valid placement squares.
+
+You can tell blocked cells apart visually because the object artwork fills the whole cell rather than sitting inside it. When reasoning about where a suspect can go, skip blocked cells entirely — they are not valid options.
+
 ---
 
 ## The Suspects
@@ -308,6 +317,8 @@ These are the words that appear in clues and what they mean precisely:
 | **N rows below/above a [object]** | The suspect is in a row exactly N rows beneath or above a specific object (e.g. a bear). Find all cells of that object type and calculate which row is N away. |
 | **[accessory] clues (cap, glasses, etc.)** | Some clues restrict room placement based on what a suspect wears in their portrait. Inspect portraits carefully — if a clue says "everyone here wore glasses," only suspects shown with glasses in their portrait can go there. |
 | **wildlife / bear** | An animal icon on the grid — treated as an object. Referenced in clues like furniture. Does not block a row or column. |
+| **blocked cell** | A cell whose entire space is filled by a large object (e.g. a tree). No suspect can be placed here. |
+| **occupiable cell** | Any cell a suspect can be placed in — open floor, or a cell with a small object like a chair or carpet. |
 
 ---
 
@@ -319,6 +330,7 @@ These are the words that appear in clues and what they mean precisely:
 | Thick black border between cells | A wall — "beside" cannot cross this |
 | Objects inside cells (chairs, plants, etc.) | Furniture/items referenced in clues — hover to confirm their name |
 | Animal icon in a cell (e.g. bear) | Wildlife — treated as an object. Clues can reference it. Does not block a row or column. |
+| Large object filling an entire cell (e.g. tree) | Blocked cell — no suspect can be placed here. Still usable as a reference point in clues ("beside the tree"). |
 | Accessories in a suspect's portrait (cap, glasses) | Evidence — some clues restrict room placement based on what a suspect wears |
 | Yellow/highlighted box above suspect cards | **General Clues** — global constraints applying to all suspects collectively |
 | Large bold letter in a cell | Confirmed locked placement for that suspect |
