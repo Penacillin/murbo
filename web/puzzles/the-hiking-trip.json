@@ -1,0 +1,790 @@
+{
+  "id": "the-hiking-trip",
+  "title": "The Hiking Trip",
+  "theme": "hiking-outdoors",
+  "difficulty": "hard",
+  "grid": {
+    "rows": 14,
+    "cols": 12
+  },
+  "rooms": [
+    {
+      "name": "Summit",
+      "color": "#cdd8df",
+      "cells": [
+        [0, 4],
+        [0, 5],
+        [0, 6],
+        [0, 7],
+        [0, 8],
+        [0, 9],
+        [1, 2],
+        [1, 3],
+        [1, 4],
+        [1, 5],
+        [1, 6],
+        [1, 7],
+        [1, 8],
+        [1, 9],
+        [2, 2],
+        [2, 3],
+        [2, 4],
+        [3, 3],
+        [3, 4]
+      ]
+    },
+    {
+      "name": "Grove",
+      "color": "#7fae8c",
+      "cells": [
+        [0, 10],
+        [0, 11],
+        [3, 10],
+        [3, 11],
+        [4, 10],
+        [4, 11],
+        [5, 10],
+        [5, 11],
+        [6, 10],
+        [6, 11],
+        [7, 11],
+        [8, 11]
+      ]
+    },
+    {
+      "name": "Ranger's Hut",
+      "color": "#b79db0",
+      "cells": [
+        [1, 10],
+        [1, 11],
+        [2, 10],
+        [2, 11]
+      ]
+    },
+    {
+      "name": "Windy Trail",
+      "color": "#cbb59c",
+      "cells": [
+        [2, 5],
+        [2, 6],
+        [2, 7],
+        [3, 5],
+        [4, 5],
+        [5, 3],
+        [5, 4],
+        [5, 5],
+        [6, 2],
+        [6, 3],
+        [7, 2],
+        [8, 1],
+        [9, 1],
+        [10, 1],
+        [11, 1],
+        [12, 0],
+        [12, 1],
+        [13, 0],
+        [13, 1]
+      ]
+    },
+    {
+      "name": "Rocky Trail",
+      "color": "#9fb0c8",
+      "cells": [
+        [2, 8],
+        [2, 9],
+        [3, 9],
+        [4, 9],
+        [5, 9],
+        [6, 9],
+        [7, 9],
+        [7, 10],
+        [8, 9],
+        [8, 10],
+        [9, 10],
+        [10, 9],
+        [10, 10],
+        [11, 8],
+        [11, 9],
+        [12, 8],
+        [13, 6],
+        [13, 7],
+        [13, 8]
+      ]
+    },
+    {
+      "name": "Pine Forest",
+      "color": "#6f9a6a",
+      "cells": [
+        [3, 0],
+        [3, 1],
+        [3, 2],
+        [3, 6],
+        [3, 7],
+        [3, 8],
+        [4, 0],
+        [4, 1],
+        [4, 2],
+        [4, 3],
+        [4, 4],
+        [4, 6],
+        [4, 7],
+        [4, 8],
+        [5, 0],
+        [5, 1],
+        [5, 2],
+        [5, 6],
+        [5, 7],
+        [5, 8],
+        [6, 0],
+        [6, 1],
+        [6, 6],
+        [6, 7],
+        [6, 8],
+        [7, 0],
+        [7, 1],
+        [8, 0]
+      ]
+    },
+    {
+      "name": "Bear Woods",
+      "color": "#5f8a55",
+      "cells": [
+        [6, 4],
+        [6, 5],
+        [7, 3],
+        [7, 4],
+        [7, 5],
+        [7, 6],
+        [7, 7],
+        [7, 8],
+        [8, 2],
+        [8, 3],
+        [8, 4],
+        [8, 5],
+        [8, 6],
+        [8, 7],
+        [8, 8],
+        [9, 0],
+        [9, 2],
+        [9, 3],
+        [9, 4],
+        [9, 5],
+        [9, 6],
+        [9, 7],
+        [9, 8],
+        [9, 9],
+        [10, 0],
+        [10, 2],
+        [10, 3],
+        [10, 4],
+        [10, 5],
+        [10, 6],
+        [10, 7],
+        [10, 8],
+        [11, 0],
+        [11, 6],
+        [11, 7],
+        [12, 6],
+        [12, 7]
+      ]
+    },
+    {
+      "name": "Lake",
+      "color": "#bcd6f2",
+      "cells": [
+        [9, 11],
+        [10, 11],
+        [11, 10],
+        [11, 11],
+        [12, 9],
+        [12, 10],
+        [12, 11],
+        [13, 9],
+        [13, 10],
+        [13, 11]
+      ]
+    },
+    {
+      "name": "Booth",
+      "color": "#9c8398",
+      "cells": [
+        [11, 2],
+        [11, 3],
+        [11, 4],
+        [11, 5],
+        [12, 2],
+        [12, 3],
+        [12, 4],
+        [12, 5],
+        [13, 2],
+        [13, 3],
+        [13, 4],
+        [13, 5]
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [0, 5]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [0, 7]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [1, 2]
+    },
+    {
+      "type": "bear",
+      "occupiable": false,
+      "cell": [1, 9]
+    },
+    {
+      "type": "chair",
+      "occupiable": true,
+      "cell": [1, 11]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [2, 4]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [3, 1]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [3, 6]
+    },
+    {
+      "type": "bear",
+      "occupiable": false,
+      "cell": [3, 7]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [3, 8]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [4, 0]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [4, 6]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [4, 8]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [4, 10]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [5, 0]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [5, 2]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [5, 6]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [5, 7]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [5, 8]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [6, 0]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [6, 1]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [6, 6]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [6, 7]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [6, 9]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [6, 10]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [6, 11]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [7, 1]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [7, 4]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [7, 5]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [7, 7]
+    },
+    {
+      "type": "bear",
+      "occupiable": false,
+      "cell": [7, 8]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [7, 11]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [8, 0]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [8, 2]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [8, 3]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [8, 5]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [8, 8]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [8, 9]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [8, 11]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [9, 2]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [9, 3]
+    },
+    {
+      "type": "bear",
+      "occupiable": false,
+      "cell": [9, 4]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [9, 8]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [10, 0]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [10, 2]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [10, 6]
+    },
+    {
+      "type": "shrub",
+      "occupiable": false,
+      "cell": [10, 7]
+    },
+    {
+      "type": "chair",
+      "occupiable": true,
+      "cell": [11, 2]
+    },
+    {
+      "type": "table",
+      "occupiable": false,
+      "cell": [11, 5]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [11, 6]
+    },
+    {
+      "type": "table",
+      "occupiable": false,
+      "cell": [12, 2]
+    },
+    {
+      "type": "tree",
+      "occupiable": false,
+      "cell": [12, 6]
+    },
+    {
+      "type": "boulder",
+      "occupiable": false,
+      "cell": [12, 11]
+    },
+    {
+      "type": "table",
+      "occupiable": false,
+      "cell": [13, 0]
+    },
+    {
+      "type": "chair",
+      "occupiable": true,
+      "cell": [13, 5]
+    }
+  ],
+  "outOfBounds": [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [1, 0],
+    [1, 1],
+    [2, 0],
+    [2, 1]
+  ],
+  "generalClues": [
+    {
+      "type": "empty_rows_with_object",
+      "count": 2,
+      "object": "bear",
+      "raw": "There are two empty rows. Each empty row contains a bear."
+    }
+  ],
+  "suspects": [
+    {
+      "id": "aubrey",
+      "name": "Aubrey",
+      "initial": "A",
+      "appearance": {
+        "hair": "black",
+        "glasses": false,
+        "cap": true,
+        "beard": false,
+        "gender": "f"
+      },
+      "clueRaw": "She was on the **Windy Trail**, everyone there wore a **cap**.",
+      "clues": [
+        {
+          "type": "room_requires_accessory",
+          "room": "Windy Trail",
+          "accessory": "cap",
+          "raw": "On the Windy Trail; everyone wore a cap."
+        }
+      ]
+    },
+    {
+      "id": "brianna",
+      "name": "Brianna",
+      "initial": "B",
+      "appearance": {
+        "hair": "brown",
+        "glasses": false,
+        "cap": true,
+        "beard": false,
+        "gender": "f"
+      },
+      "clueRaw": "She was exactly **two rows north** of **Finlay**.",
+      "clues": [
+        {
+          "type": "directional_person",
+          "target": "finlay",
+          "dir": "N",
+          "distance": 2,
+          "exact": true,
+          "raw": "Two rows north of Finlay."
+        }
+      ]
+    },
+    {
+      "id": "clark",
+      "name": "Clark",
+      "initial": "C",
+      "appearance": {
+        "hair": "brown",
+        "glasses": true,
+        "cap": false,
+        "beard": false,
+        "gender": "m"
+      },
+      "clueRaw": "He was on the **Rocky Trail**, everyone there wore **glasses**.",
+      "clues": [
+        {
+          "type": "room_requires_accessory",
+          "room": "Rocky Trail",
+          "accessory": "glasses",
+          "raw": "On the Rocky Trail; everyone wore glasses."
+        }
+      ]
+    },
+    {
+      "id": "danika",
+      "name": "Danika",
+      "initial": "D",
+      "appearance": {
+        "hair": "white",
+        "glasses": false,
+        "cap": false,
+        "beard": false,
+        "gender": "f"
+      },
+      "clueRaw": "She was **alone** in the **Pine Forest**.",
+      "clues": [
+        {
+          "type": "alone_in_room",
+          "room": "Pine Forest",
+          "raw": "Alone in the Pine Forest."
+        }
+      ]
+    },
+    {
+      "id": "elias",
+      "name": "Elias",
+      "initial": "E",
+      "appearance": {
+        "hair": "brown",
+        "glasses": false,
+        "cap": false,
+        "beard": true,
+        "gender": "m"
+      },
+      "clueRaw": "He was in the **Ranger's Hut**.",
+      "clues": [
+        {
+          "type": "in_room",
+          "room": "Ranger's Hut",
+          "raw": "In the Ranger's Hut."
+        }
+      ]
+    },
+    {
+      "id": "finlay",
+      "name": "Finlay",
+      "initial": "F",
+      "appearance": {
+        "hair": "blonde",
+        "glasses": true,
+        "cap": false,
+        "beard": true,
+        "gender": "m"
+      },
+      "clueRaw": "There was a **bear** in his **column**, exactly **4 rows north** of him.",
+      "clues": [
+        {
+          "type": "object_offset",
+          "object": "bear",
+          "dRow": -4,
+          "dCol": 0,
+          "raw": "A bear in his column, 4 rows north."
+        }
+      ]
+    },
+    {
+      "id": "gavin",
+      "name": "Gavin",
+      "initial": "G",
+      "appearance": {
+        "hair": "brown",
+        "glasses": false,
+        "cap": false,
+        "beard": false,
+        "gender": "m"
+      },
+      "clueRaw": "He was **beside** a **boulder**.",
+      "clues": [
+        {
+          "type": "beside_object",
+          "object": "boulder",
+          "raw": "Beside a boulder."
+        }
+      ]
+    },
+    {
+      "id": "hank",
+      "name": "Hank",
+      "initial": "H",
+      "appearance": {
+        "hair": "black",
+        "glasses": false,
+        "cap": true,
+        "beard": true,
+        "gender": "m"
+      },
+      "clueRaw": "He was in the **bottom row**. His area had at least **3 people** in it.",
+      "clues": [
+        {
+          "type": "in_row",
+          "row": "bottom",
+          "raw": "In the bottom row."
+        },
+        {
+          "type": "room_min_people_self",
+          "count": 3,
+          "raw": "His area had at least 3 people."
+        }
+      ]
+    },
+    {
+      "id": "iris",
+      "name": "Iris",
+      "initial": "I",
+      "appearance": {
+        "hair": "black",
+        "glasses": false,
+        "cap": false,
+        "beard": false,
+        "gender": "f"
+      },
+      "clueRaw": "She was sitting in a **chair**.",
+      "clues": [
+        {
+          "type": "on_object",
+          "object": "chair",
+          "raw": "Sitting in a chair."
+        }
+      ]
+    },
+    {
+      "id": "joe",
+      "name": "Joe",
+      "initial": "J",
+      "appearance": {
+        "hair": "black",
+        "glasses": true,
+        "cap": false,
+        "beard": false,
+        "gender": "m"
+      },
+      "clueRaw": "He was **beside** a **bear**.",
+      "clues": [
+        {
+          "type": "beside_object",
+          "object": "bear",
+          "raw": "Beside a bear."
+        }
+      ]
+    },
+    {
+      "id": "kobe",
+      "name": "Kobe",
+      "initial": "K",
+      "appearance": {
+        "hair": "blonde",
+        "glasses": false,
+        "cap": false,
+        "beard": false,
+        "gender": "m"
+      },
+      "clueRaw": "He was in the **Grove**.",
+      "clues": [
+        {
+          "type": "in_room",
+          "room": "Grove",
+          "raw": "In the Grove."
+        }
+      ]
+    },
+    {
+      "id": "vincenza",
+      "name": "Vincenza",
+      "initial": "V",
+      "isVictim": true,
+      "appearance": {
+        "hair": "blonde",
+        "glasses": true,
+        "cap": true,
+        "beard": false,
+        "gender": "f"
+      },
+      "clueRaw": "The Victim. She was alone with the murderer.",
+      "clues": [
+        {
+          "type": "alone_with_murderer",
+          "raw": "Alone with the murderer."
+        }
+      ]
+    }
+  ],
+  "solution": {
+    "finlay": [5, 9],
+    "iris": [11, 2],
+    "elias": [2, 10],
+    "joe": [10, 4],
+    "kobe": [4, 11],
+    "hank": [13, 1],
+    "danika": [7, 0],
+    "clark": [12, 8],
+    "gavin": [0, 6],
+    "aubrey": [6, 3],
+    "brianna": [3, 5],
+    "vincenza": [8, 7]
+  },
+  "murdererId": "joe"
+}

@@ -1,0 +1,30 @@
+{
+  "puzzles": [
+    {
+      "id": "car-repair",
+      "title": "Car Repair",
+      "theme": "auto-repair",
+      "difficulty": "easy",
+      "grid": {
+        "rows": 6,
+        "cols": 6
+      },
+      "suspectCount": 6,
+      "solved": true,
+      "file": "puzzles/car-repair.json"
+    },
+    {
+      "id": "the-hiking-trip",
+      "title": "The Hiking Trip",
+      "theme": "hiking-outdoors",
+      "difficulty": "hard",
+      "grid": {
+        "rows": 14,
+        "cols": 12
+      },
+      "suspectCount": 12,
+      "solved": true,
+      "file": "puzzles/the-hiking-trip.json"
+    }
+  ]
+}
