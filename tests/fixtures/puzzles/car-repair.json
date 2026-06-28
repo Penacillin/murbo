@@ -81,17 +81,17 @@
       "cell": [0, 1]
     },
     {
-      "type": "couch",
+      "type": "table",
       "occupiable": false,
       "cell": [0, 2]
     },
     {
-      "type": "couch",
+      "type": "table",
       "occupiable": false,
       "cell": [1, 1]
     },
     {
-      "type": "couch",
+      "type": "table",
       "occupiable": false,
       "cell": [1, 2]
     },
