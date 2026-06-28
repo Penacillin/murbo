@@ -233,7 +233,9 @@ With a suspect selected, a **quick single click** on a grid cell places a small 
 
 Pencil notes do **not** trigger X marks in the row and column. They do not count as placements for the purpose of submitting. The game reminds you of this with the instruction bar: *"Tap the grid to write a note, or press and hold to place this character."*
 
-To clear a pencil note, click the cell again or press Undo.
+**Multiple suspects can be pencilled into the same cell.** Select a different suspect and click the same cell — both letters appear side by side. This is useful for tracking cells where you've narrowed it down to two or three candidates.
+
+To clear a pencil note, select that suspect and click the cell again, or press Undo.
 
 ### Step 4b: Place and Lock a Suspect (Confirmed Placement)
 
