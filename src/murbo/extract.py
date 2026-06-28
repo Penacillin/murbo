@@ -49,4 +49,18 @@ def extract_puzzle(
             instruction=_REVIEW_INSTRUCTION + json.dumps(puzzle, indent=2),
             image_b64=image_b64,
         )
+    return _normalize(puzzle)
+
+
+def _normalize(puzzle: dict[str, Any]) -> dict[str, Any]:
+    """Tidy harmless model quirks before schema validation.
+
+    Models often emit explicit ``null`` for optional fields they chose not to set (e.g. a
+    room's ``category``); the schema treats a missing key and ``null`` differently, so drop
+    such top-level optional nulls. Nulls *inside* clues are meaningful (e.g. ``object_offset``
+    uses ``null`` for an unconstrained axis), so those are left untouched.
+    """
+    for room in puzzle.get("rooms", []):
+        if isinstance(room, dict) and room.get("category") is None:
+            room.pop("category", None)
     return puzzle

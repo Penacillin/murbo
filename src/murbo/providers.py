@@ -75,6 +75,9 @@ class _AnthropicCompatProvider(VisionProvider):
     """
 
     env_key: str
+    max_tokens: int = 16000
+    # Extra request-body fields merged into the Messages call (e.g. MiniMax's `thinking`).
+    extra_body: dict[str, Any] | None = None
 
     def _client(self) -> Any:
         if not os.environ.get(self.env_key):
@@ -87,9 +90,12 @@ class _AnthropicCompatProvider(VisionProvider):
 
     def extract(self, *, system: str, instruction: str, image_b64: str) -> dict[str, Any]:
         client = self._client()
+        kwargs: dict[str, Any] = {}
+        if self.extra_body:
+            kwargs["extra_body"] = self.extra_body
         msg = client.messages.create(
             model=self.model,
-            max_tokens=16000,
+            max_tokens=self.max_tokens,
             system=system,
             messages=[
                 {
@@ -107,8 +113,19 @@ class _AnthropicCompatProvider(VisionProvider):
                     ],
                 }
             ],
+            **kwargs,
         )
+        # Skip any non-text blocks (e.g. extended-thinking blocks); the JSON is in the text.
         text = "".join(block.text for block in msg.content if block.type == "text")
+        if not text.strip():
+            reason = getattr(msg, "stop_reason", None)
+            hint = (
+                " (response hit max_tokens — thinking likely consumed the whole budget; "
+                "raise max_tokens or disable review)"
+                if reason == "max_tokens"
+                else ""
+            )
+            raise ProviderError(f"model returned no text (stop_reason={reason!r}){hint}")
         return _extract_json(text)
 
 
@@ -123,6 +140,10 @@ class MiniMaxProvider(_AnthropicCompatProvider):
     default_model = "MiniMax-M3"  # the multimodal model (text + image)
     env_key = "MINIMAX_API_KEY"
     base_url = "https://api.minimax.io/anthropic"
+    # Adaptive thinking markedly improves the careful grid/room tracing this task needs;
+    # the larger budget must cover the thinking tokens AND the JSON that follows.
+    max_tokens = 48000
+    extra_body = {"thinking": {"type": "adaptive"}}
 
     def _client(self) -> Any:
         api_key = os.environ.get(self.env_key)
@@ -132,7 +153,11 @@ class MiniMaxProvider(_AnthropicCompatProvider):
             import anthropic
         except ImportError as exc:  # pragma: no cover
             raise ProviderError("uv add anthropic to use the MiniMax provider") from exc
-        return anthropic.Anthropic(base_url=self.base_url, api_key=api_key)
+        # Explicit timeout: thinking + a large max_tokens would otherwise trip the SDK's
+        # "streaming required for >10min" guard.
+        return anthropic.Anthropic(
+            base_url=self.base_url, api_key=api_key, max_retries=2, timeout=600.0
+        )
 
 
 class OpenAIProvider(VisionProvider):

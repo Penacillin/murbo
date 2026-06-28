@@ -80,3 +80,30 @@ def test_extract_puzzle_review_does_second_pass(monkeypatch):
 
     extract_mod.extract_puzzle("whatever.png", provider="claude", review=True)
     assert len(fake.calls) == 2  # extract + review
+
+
+def test_normalize_drops_null_room_category_but_keeps_clue_nulls():
+    puzzle = {
+        "rooms": [
+            {"name": "A", "category": None, "cells": []},
+            {"name": "B", "category": "store", "cells": []},
+        ],
+        "suspects": [
+            {
+                "id": "x",
+                "clues": [{"type": "object_offset", "object": "bear", "dRow": -4, "dCol": None}],
+            }
+        ],
+    }
+    out = extract_mod._normalize(puzzle)
+    assert "category" not in out["rooms"][0]  # null optional dropped
+    assert out["rooms"][1]["category"] == "store"  # real value kept
+    assert out["suspects"][0]["clues"][0]["dCol"] is None  # meaningful clue null preserved
+
+
+def test_minimax_uses_thinking_and_large_budget():
+    from murbo.providers import MiniMaxProvider
+
+    p = MiniMaxProvider()
+    assert p.extra_body == {"thinking": {"type": "adaptive"}}
+    assert p.max_tokens >= 32000
