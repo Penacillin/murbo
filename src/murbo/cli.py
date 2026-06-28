@@ -1,6 +1,6 @@
 """Murbo command-line interface — one CLI, four subcommands.
 
-murbo extract <image.png> [--provider claude|openai] [--model ...] [-o OUT]
+murbo extract <image.png> [--provider claude|minimax|openai] [--model ...] [-o OUT]
 murbo solve   <puzzle.json> [--in-place]
 murbo build-manifest
 murbo serve   [--host H] [--port P]
@@ -20,7 +20,10 @@ PUZZLES_DIR = WEB_DIR / "puzzles"
 
 
 def _cmd_extract(args: argparse.Namespace) -> int:
+    from murbo.env import load_dotenv
     from murbo.extract import extract_puzzle
+
+    load_dotenv()  # pick up API keys from a local .env (cross-platform; real env wins)
 
     out = Path(args.output) if args.output else PUZZLES_DIR / f"{Path(args.image).stem}.json"
     puzzle = extract_puzzle(
@@ -88,7 +91,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_ex = sub.add_parser("extract", help="PNG -> structured puzzle JSON (LLM vision)")
     p_ex.add_argument("image", help="input PNG (may be blurry/warped)")
-    p_ex.add_argument("--provider", choices=["claude", "openai"], default="claude")
+    p_ex.add_argument("--provider", choices=["claude", "minimax", "openai"], default="claude")
     p_ex.add_argument("--model", default=None, help="override the provider's default model")
     p_ex.add_argument("-o", "--output", default=None, help="output JSON path")
     p_ex.add_argument("--review", action="store_true", help="run a second self-correction pass")

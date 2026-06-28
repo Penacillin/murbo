@@ -259,6 +259,9 @@ extract = [
     { name = "openai" },
     { name = "pillow" },
 ]
+minimax = [
+    { name = "anthropic" },
+]
 openai = [
     { name = "openai" },
 ]
@@ -272,12 +275,13 @@ dev = [
 requires-dist = [
     { name = "anthropic", marker = "extra == 'claude'", specifier = ">=0.40" },
     { name = "anthropic", marker = "extra == 'extract'", specifier = ">=0.40" },
+    { name = "anthropic", marker = "extra == 'minimax'", specifier = ">=0.40" },
     { name = "jsonschema", specifier = ">=4.21" },
     { name = "openai", marker = "extra == 'extract'", specifier = ">=1.40" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.40" },
     { name = "pillow", marker = "extra == 'extract'", specifier = ">=10.0" },
 ]
-provides-extras = ["claude", "openai", "extract"]
+provides-extras = ["claude", "minimax", "openai", "extract"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.1.1" }]

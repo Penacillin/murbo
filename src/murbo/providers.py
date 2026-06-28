@@ -1,9 +1,12 @@
-"""Vision provider abstraction: one interface, two backends (Claude + OpenAI).
+"""Vision provider abstraction: one interface, three backends (Claude + MiniMax + OpenAI).
 
 Each backend takes a system prompt, a user instruction, and a base64 PNG, and returns a
-JSON object (the structured puzzle). Both are asked for strict JSON; the caller validates
+JSON object (the structured puzzle). All are asked for strict JSON; the caller validates
 it against the schema. API keys come from the environment
-(``ANTHROPIC_API_KEY`` / ``OPENAI_API_KEY``).
+(``ANTHROPIC_API_KEY`` / ``MINIMAX_API_KEY`` / ``OPENAI_API_KEY``).
+
+MiniMax exposes an Anthropic-compatible Messages endpoint, so it reuses the ``anthropic``
+SDK pointed at MiniMax's ``base_url``.
 """
 
 from __future__ import annotations
@@ -63,18 +66,27 @@ class VisionProvider(ABC):
     def extract(self, *, system: str, instruction: str, image_b64: str) -> dict[str, Any]: ...
 
 
-class ClaudeProvider(VisionProvider):
-    name = "claude"
-    default_model = "claude-opus-4-8"
+class _AnthropicCompatProvider(VisionProvider):
+    """Shared logic for any Anthropic Messages-API-compatible backend.
 
-    def extract(self, *, system: str, instruction: str, image_b64: str) -> dict[str, Any]:
+    Subclasses set ``name``/``default_model`` and implement :meth:`_client`, which
+    returns a configured ``anthropic.Anthropic`` (Claude defaults; MiniMax overrides
+    ``base_url`` + ``api_key``).
+    """
+
+    env_key: str
+
+    def _client(self) -> Any:
+        if not os.environ.get(self.env_key):
+            raise ProviderError(f"{self.env_key} is not set")
         try:
             import anthropic
         except ImportError as exc:  # pragma: no cover
-            raise ProviderError("pip/uv add anthropic to use the Claude provider") from exc
-        if not os.environ.get("ANTHROPIC_API_KEY"):
-            raise ProviderError("ANTHROPIC_API_KEY is not set")
-        client = anthropic.Anthropic()
+            raise ProviderError(f"uv add anthropic to use the {self.name} provider") from exc
+        return anthropic.Anthropic()
+
+    def extract(self, *, system: str, instruction: str, image_b64: str) -> dict[str, Any]:
+        client = self._client()
         msg = client.messages.create(
             model=self.model,
             max_tokens=16000,
@@ -98,6 +110,29 @@ class ClaudeProvider(VisionProvider):
         )
         text = "".join(block.text for block in msg.content if block.type == "text")
         return _extract_json(text)
+
+
+class ClaudeProvider(_AnthropicCompatProvider):
+    name = "claude"
+    default_model = "claude-opus-4-8"
+    env_key = "ANTHROPIC_API_KEY"
+
+
+class MiniMaxProvider(_AnthropicCompatProvider):
+    name = "minimax"
+    default_model = "MiniMax-M3"  # the multimodal model (text + image)
+    env_key = "MINIMAX_API_KEY"
+    base_url = "https://api.minimax.io/anthropic"
+
+    def _client(self) -> Any:
+        api_key = os.environ.get(self.env_key)
+        if not api_key:
+            raise ProviderError(f"{self.env_key} is not set")
+        try:
+            import anthropic
+        except ImportError as exc:  # pragma: no cover
+            raise ProviderError("uv add anthropic to use the MiniMax provider") from exc
+        return anthropic.Anthropic(base_url=self.base_url, api_key=api_key)
 
 
 class OpenAIProvider(VisionProvider):
@@ -134,6 +169,7 @@ class OpenAIProvider(VisionProvider):
 
 _PROVIDERS: dict[str, type[VisionProvider]] = {
     "claude": ClaudeProvider,
+    "minimax": MiniMaxProvider,
     "openai": OpenAIProvider,
 }
 

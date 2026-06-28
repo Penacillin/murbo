@@ -12,6 +12,7 @@ import pytest
 from murbo import extract as extract_mod
 from murbo.providers import (
     ClaudeProvider,
+    MiniMaxProvider,
     OpenAIProvider,
     ProviderError,
     _extract_json,
@@ -39,10 +40,18 @@ def test_extract_json_no_object_raises():
 
 def test_provider_registry():
     assert isinstance(get_provider("claude"), ClaudeProvider)
+    assert isinstance(get_provider("minimax"), MiniMaxProvider)
     assert isinstance(get_provider("openai"), OpenAIProvider)
     assert get_provider("claude", model="custom").model == "custom"
+    assert get_provider("minimax").model == "MiniMax-M3"
     with pytest.raises(ProviderError):
         get_provider("nope")
+
+
+def test_minimax_requires_api_key(monkeypatch):
+    monkeypatch.delenv("MINIMAX_API_KEY", raising=False)
+    with pytest.raises(ProviderError, match="MINIMAX_API_KEY"):
+        get_provider("minimax").extract(system="s", instruction="i", image_b64="x")
 
 
 class _FakeProvider:

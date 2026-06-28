@@ -11,6 +11,7 @@ dependencies = [
 [project.optional-dependencies]
 # Vision providers are optional: install only what you need.
 claude = ["anthropic>=0.40"]
+minimax = ["anthropic>=0.40"]  # MiniMax speaks the Anthropic Messages API
 openai = ["openai>=1.40"]
 extract = ["anthropic>=0.40", "openai>=1.40", "pillow>=10.0"]
 

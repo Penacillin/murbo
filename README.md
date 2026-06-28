@@ -26,7 +26,7 @@ uv sync
 ```bash
 # PNG -> structured puzzle JSON via an LLM vision provider (needs an API key)
 uv run murbo extract input-puzzles/processed/car-repair-color_p1.png \
-    --provider claude -o web/puzzles/car-repair.json      # or --provider openai
+    --provider claude -o web/puzzles/car-repair.json   # or --provider minimax | openai
 uv run murbo extract <png> --provider claude --review     # optional 2nd self-correction pass
 
 # Solve: assert a unique solution and bake `solution` + `murdererId` into the JSON.
@@ -40,10 +40,17 @@ uv run murbo build-manifest
 uv run murbo serve
 ```
 
-Vision providers (`src/murbo/providers.py`): Claude (`ANTHROPIC_API_KEY`) and OpenAI
+Vision providers (`src/murbo/providers.py`): Claude (`ANTHROPIC_API_KEY`), MiniMax
+(`MINIMAX_API_KEY`, Anthropic-compatible — default model `MiniMax-M3`), and OpenAI
 (`OPENAI_API_KEY`), behind one interface. The extraction prompt
 (`src/murbo/prompts/extract_guide.md`) carries the game-guide vocabulary so the model emits
 the typed, solver-checkable clues.
+
+Keys are read from the environment. Copy `.env.example` to `.env` and fill in whichever
+provider you use (`.env` is git-ignored). `murbo extract` **auto-loads `.env`** from the
+working directory on any OS — no shell setup needed. (Real environment variables still take
+precedence, so you can also just export the key directly:
+`export ANTHROPIC_API_KEY=...` on macOS/Linux, `$Env:ANTHROPIC_API_KEY="..."` in PowerShell.)
 
 ## Layout
 

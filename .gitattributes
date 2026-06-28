@@ -1,0 +1,3 @@
+# Normalize line endings so the repo behaves the same on Windows, macOS and Linux.
+# Text files are stored with LF in git; Windows checkouts may use CRLF locally.
+* text=auto eol=lf
