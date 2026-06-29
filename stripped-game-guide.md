@@ -225,26 +225,28 @@ Before solving, hover your mouse over cells that appear to have objects (furnitu
 
 ### Step 3: Select a Suspect
 
-Click the **portrait card** of the suspect you want to place. A blue outline appears around their cards. The instruction bar at the bottom of the screen reminds you: *"Tap the grid to write a note, or press and hold to place this character."*
+Click the **portrait card** of the suspect you want to place. A blue outline appears around their cards. The instruction bar at the bottom of the screen shows: *"Tap the grid to write a note, or press and hold to place this character."* — tap for a pencil note, hold to lock.
 
-### Step 4a: Place and Lock a Suspect (Confirmed Placement)
+### Step 4a: Write a Pencil Note (Tentative Mark)
 
-With a suspect selected, move to a grid cell and **hold the mouse button down** for about one second. A **circle animation** appears while you hold. When the animation completes, the suspect is locked into that cell.
+With a suspect selected, a **quick single click** on a grid cell places a small letter in the top corner — a **pencil note**. This marks a cell as a possibility without committing to it.
+
+Pencil notes do **not** trigger X marks in the row and column. They do not count as placements for the purpose of submitting. The game reminds you of this with the instruction bar: *"Tap the grid to write a note, or press and hold to place this character."*
+
+**Multiple suspects can be pencilled into the same cell.** Select a different suspect and click the same cell — both letters appear side by side. This is useful for tracking cells where you've narrowed it down to two or three candidates.
+
+To clear a pencil note, select that suspect and click the cell again, or press Undo.
+
+### Step 4b: Place and Lock a Suspect (Confirmed Placement)
+
+To actually place a suspect, move to a grid cell and **hold the mouse button down** for about one second. A **circle animation** appears while you hold. When the animation completes, the suspect is locked into that cell.
 
 When locked:
-- Their letter (or **V** for the victim) appears large and bold in the cell.
+- Their letter (or **V** for the victim) appears large and bold in the cell, filling it.
 - The entire row and entire column get **X marks** — no one else can go there.
 - A message confirms the row and column are now blocked.
 
-You can also **left-click** a cell to place the suspect without the hold animation — this places them immediately. To **remove** a placed suspect, click their cell again.
-
-### Step 4b: Write a Pencil Note (Tentative Mark)
-
-A quick single click on a cell (while a suspect is selected) places a small letter in the corner — a **pencil note**. This marks a cell as a possibility without committing to it.
-
-Pencil notes do **not** trigger X marks in the row and column. They do not count as placements for the purpose of submitting.
-
-To clear a pencil note, click the cell again or press Undo.
+To **remove** a locked suspect, click their cell again.
 
 ### Step 5: Mark Impossible Cells with X
 

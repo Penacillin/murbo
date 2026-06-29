@@ -1,12 +1,12 @@
 import { loadPuzzle } from "./puzzles.js";
-import { avatarSVG, suspectColor } from "./avatar.js";
+import { avatarSVG, suspectColor, loadAvatarAssets } from "./avatar.js";
 import { boardIcon, legendIcon } from "./icons.js";
 
 const OCCUPIABLE_TYPES = ["chair", "car", "oil_slick"];
 
 // ---- module state for the active game ----
 let P = null; // puzzle
-let state = null; // { placements: {id:[r,c]}, xs: Set "r,c", notes: {"r,c":initial} }
+let state = null; // { placements: {id:[r,c]}, xs: Set "r,c", notes: {"r,c":[initial,...]} }
 let selected = null; // suspect id
 let tool = "place"; // place | x | erase
 let history = [];
@@ -30,12 +30,16 @@ function save() {
 function load() {
   try {
     const d = JSON.parse(localStorage.getItem(storeKey()));
-    if (d)
+    if (d) {
+      // notes hold a list of pencilled marks per cell; migrate old single-string saves
+      const notes = {};
+      for (const [k, v] of Object.entries(d.notes || {})) notes[k] = Array.isArray(v) ? v : [v];
       return {
         placements: d.placements || {},
         xs: new Set(d.xs || []),
-        notes: d.notes || {},
+        notes,
       };
+    }
   } catch {
     /* ignore */
   }
@@ -110,6 +114,7 @@ export async function renderGame(view, id) {
     root.innerHTML = `<p style="color:#fff">Could not load puzzle: ${e.message}</p>`;
     return;
   }
+  await loadAvatarAssets(P.suspects.map((s) => s.id));
   state = load();
   selected = null;
   tool = "place";
@@ -174,7 +179,7 @@ function drawSuspects() {
             .join("")}</div>`
         : ""
     }
-    <h3>Suspects <small>· click, then tap the grid</small></h3>
+    <h3>Suspects <small>· click to select, hold on grid to place</small></h3>
     <div class="suspects-grid" style="grid-template-columns:repeat(${cols},1fr)">${P.suspects.map(suspectCard).join("")}</div>`;
   el.querySelectorAll(".suspect").forEach((node) => {
     node.addEventListener("click", () => {
@@ -264,7 +269,8 @@ function drawBoard() {
       }
       const userX = state.xs.has(k);
       const showX = (userX || (autoX.has(k) && !placedId)) ? `<span class="xmark">✕</span>` : "";
-      const note = state.notes[k] ? `<span class="note">${state.notes[k]}</span>` : "";
+      const marks = state.notes[k];
+      const note = marks && marks.length ? `<span class="note">${marks.join("")}</span>` : "";
       const lab = labelCells[k];
       const label = lab ? `<span class="roomlabel ${lab.side}">${lab.name}</span>` : "";
       html += `<div class="cell ${wt} ${wb} ${wl} ${wr} ${isBlocked ? "blocked" : ""}"
@@ -347,8 +353,29 @@ function onTool(act) {
 }
 
 // ---- board interaction ----
+const HOLD_MS = 700; // press-and-hold duration to lock a placement
+
 function bindBoardPointer(board) {
   let dragging = false;
+  let holdTimer = null;
+  let holdCell = null; // DOM node currently showing the hold ring
+  let holdRC = null; // [r, c] of the cell under the pointer
+  let holdCompleted = false; // true once a hold locked a placement
+
+  function cancelHold() {
+    if (holdTimer) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+    }
+    if (holdCell) {
+      holdCell.classList.remove("holding");
+      const ring = holdCell.querySelector(".hold-ring");
+      if (ring) ring.remove();
+      holdCell = null;
+    }
+    holdRC = null;
+  }
+
   board.addEventListener("contextmenu", (e) => {
     const cell = e.target.closest(".cell");
     if (!cell) return;
@@ -363,17 +390,54 @@ function bindBoardPointer(board) {
     if (tool === "x" || tool === "erase") {
       dragging = true;
       applyMark(r, c);
-    } else {
-      onCellPlace(r, c);
+      return;
+    }
+    // place mode: hold to lock, tap to write/clear a pencil note
+    holdCompleted = false;
+    holdRC = [r, c];
+    const k = key(r, c);
+    if (blockedSet().has(k) || oobSet().has(k)) return;
+    // only animate a hold when a suspect is selected and no token is locked here
+    if (selected && !placedSuspectAt(r, c)) {
+      holdCell = cell;
+      cell.classList.add("holding");
+      const ring = document.createElement("span");
+      ring.className = "hold-ring";
+      cell.appendChild(ring);
+      holdTimer = setTimeout(() => {
+        holdTimer = null;
+        holdCompleted = true;
+        cancelHold();
+        lockPlacement(r, c);
+      }, HOLD_MS);
     }
   });
   board.addEventListener("pointerover", (e) => {
-    if (!dragging) return;
     const cell = e.target.closest(".cell");
-    if (cell) applyMark(+cell.dataset.r, +cell.dataset.c);
+    if (dragging) {
+      if (cell) applyMark(+cell.dataset.r, +cell.dataset.c);
+      return;
+    }
+    // moving onto a different cell cancels an in-progress hold (avoids drag-locks)
+    if (holdRC && cell) {
+      const r = +cell.dataset.r,
+        c = +cell.dataset.c;
+      if (r !== holdRC[0] || c !== holdRC[1]) cancelHold();
+    }
   });
   window.addEventListener("pointerup", () => {
     dragging = false;
+    if (holdCompleted) {
+      holdCompleted = false;
+      holdRC = null;
+      return;
+    }
+    // released before the hold completed -> treat as a tap
+    if (holdRC) {
+      const [r, c] = holdRC;
+      cancelHold();
+      onCellTap(r, c);
+    }
   });
 }
 
@@ -391,22 +455,56 @@ function applyMark(r, c) {
   }
 }
 
-function onCellPlace(r, c) {
+// Press-and-hold completed: lock the selected suspect into this cell.
+function lockPlacement(r, c) {
   const k = key(r, c);
   if (blockedSet().has(k) || oobSet().has(k)) return;
+  if (!selected || placedSuspectAt(r, c)) return;
   pushHistory();
+  // remove any prior placement of this suspect, then place
+  state.placements[selected] = [r, c];
+  // clear pencil notes across the now-blocked row and column
+  for (let cc = 0; cc < P.grid.cols; cc++) delete state.notes[key(r, cc)];
+  for (let rr = 0; rr < P.grid.rows; rr++) delete state.notes[key(rr, c)];
+  // this suspect is now placed (only one cell each) — drop their pencil marks everywhere else
+  const s = suspectById(selected);
+  const mark = s.isVictim ? "V" : s.initial;
+  for (const kk of Object.keys(state.notes)) {
+    const arr = state.notes[kk];
+    const i = arr.indexOf(mark);
+    if (i >= 0) {
+      arr.splice(i, 1);
+      if (!arr.length) delete state.notes[kk];
+    }
+  }
+  save();
+  rerender();
+}
+
+// Quick tap: remove a locked token, or toggle a pencil note for the selected suspect.
+function onCellTap(r, c) {
+  const k = key(r, c);
+  if (blockedSet().has(k) || oobSet().has(k)) return;
   const existing = placedSuspectAt(r, c);
   if (existing) {
-    // clicking a token removes it
+    // tapping a locked token removes it
+    pushHistory();
     delete state.placements[existing];
     save();
     rerender();
     return;
   }
   if (!selected) return;
-  // remove any prior placement of this suspect, then place
-  state.placements[selected] = [r, c];
-  delete state.notes[k];
+  const s = suspectById(selected);
+  const mark = s.isVictim ? "V" : s.initial;
+  pushHistory();
+  // toggle this suspect's mark within the cell's list (several suspects can share a cell)
+  const marks = state.notes[k] || [];
+  const i = marks.indexOf(mark);
+  if (i >= 0) marks.splice(i, 1);
+  else marks.push(mark);
+  if (marks.length) state.notes[k] = marks;
+  else delete state.notes[k];
   save();
   rerender();
 }
@@ -505,9 +603,10 @@ function revealMurderer() {
 function showHowTo() {
   modal(`<h2>How to play</h2>
     <ul>
-      <li><b>Select</b> a suspect (click their card), then <b>click a grid cell</b> to place them.</li>
-      <li>Click a placed token again to remove it.</li>
-      <li>Every placement <b>blocks its whole row and column</b> (shown with ✕).</li>
+      <li><b>Select</b> a suspect (click their card), then <b>press and hold</b> a grid cell (~1s) to lock them in.</li>
+      <li><b>Tap</b> a cell to leave a <b>pencil note</b> — a tentative mark that doesn't block the row/column or count toward Submit. Tap again or press Undo to clear it.</li>
+      <li>Tap a locked token again to remove it.</li>
+      <li>Every locked placement <b>blocks its whole row and column</b> (shown with ✕).</li>
       <li><b>Right-click</b> a cell, or use the <b>✕ tool</b>, to mark cells you've ruled out. Drag to mark many.</li>
       <li>The <b>eraser</b> clears marks; <b>hold</b> it to wipe the whole board.</li>
       <li><b>💡 Hint</b> reveals one correct placement. <b>✓ Submit</b> checks your answer once everyone is placed.</li>

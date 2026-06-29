@@ -1,6 +1,9 @@
 // Procedural flat-vector portrait from a suspect's `appearance` attributes.
 // Murdoku-style: a coloured background unique to the suspect, a simple face,
 // hair, and optional accessories (cap, glasses, beard). Never uses the source image.
+//
+// Drop a custom <suspect-id>.svg into web/assets/avatars/ to override any portrait.
+// Call loadAvatarAssets(ids) after loading a puzzle to pick them up.
 
 const HAIR = {
   blonde: "#e6c86a",
@@ -31,6 +34,19 @@ function skinFor(id) {
   return tones[hashStr(id + "skin") % tones.length];
 }
 
+const _cache = {};
+
+export async function loadAvatarAssets(ids, base = "assets/avatars") {
+  await Promise.allSettled(
+    ids.map(async (id) => {
+      try {
+        const r = await fetch(`${base}/${id}.svg`);
+        if (r.ok) _cache[id] = await r.text();
+      } catch { /* ignore — procedural fallback used */ }
+    })
+  );
+}
+
 export function suspectColor(suspect) {
   const a = suspect.appearance || {};
   if (a.bg) return a.bg;
@@ -38,8 +54,9 @@ export function suspectColor(suspect) {
 }
 
 export function avatarSVG(suspect) {
-  const a = suspect.appearance || {};
   const id = suspect.id || suspect.name || "x";
+  if (_cache[id]) return _cache[id];
+  const a = suspect.appearance || {};
   const bg = a.bg || BG_PALETTE[hashStr(id) % BG_PALETTE.length];
   const skin = skinFor(id);
   const hair = HAIR[a.hair] || HAIR.default;

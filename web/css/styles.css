@@ -176,6 +176,15 @@ body {
 .cell .token.victim { background: var(--danger); }
 .cell .note { position: absolute; left: 3px; top: 1px; font-size: 11px; font-weight: 800; color: #1d3b8a; z-index: 5; }
 .cell .xmark { position: absolute; inset: 0; display: grid; place-items: center; color: #c0314a; font-size: 60%; font-weight: 900; z-index: 3; opacity: 0.8; }
+.cell .hold-ring {
+  position: absolute; inset: 8%; border-radius: 50%;
+  background: rgba(47,111,237,0.30); z-index: 6; pointer-events: none;
+  animation: holdgrow 0.7s ease-out forwards;
+}
+@keyframes holdgrow {
+  from { transform: scale(0.1); opacity: 0.2; }
+  to   { transform: scale(1);   opacity: 0.85; }
+}
 /* thick room walls drawn via box-shadow insets */
 .cell.wall-t { border-top: 3px solid #11161f; }
 .cell.wall-b { border-bottom: 3px solid #11161f; }

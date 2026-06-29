@@ -1,6 +1,9 @@
 // Crisp flat-vector SVG icons for board objects. Stylised (Murdoku-like), never
 // cropped from the source image. Each returns an inner-SVG markup string drawn in a
 // 0..100 viewBox; `boardIcon` wraps it with a viewBox.
+//
+// Drop a custom <type>.svg into web/assets/icons/ to override any icon.
+// Call loadIconAssets() once at startup to pick them up.
 
 const RAW = {
   chair: `<rect x="22" y="30" width="56" height="44" rx="9" fill="#eef1f7" stroke="#9aa6bd" stroke-width="3"/>
@@ -40,7 +43,21 @@ const RAW = {
     <rect x="36" y="74" width="8" height="10" fill="#8a6a3e"/><rect x="60" y="74" width="8" height="10" fill="#8a6a3e"/>`,
 };
 
+const _cache = {};
+
+export async function loadIconAssets(base = "assets/icons") {
+  await Promise.allSettled(
+    Object.keys(RAW).map(async (type) => {
+      try {
+        const r = await fetch(`${base}/${type}.svg`);
+        if (r.ok) _cache[type] = await r.text();
+      } catch { /* ignore — inline fallback used */ }
+    })
+  );
+}
+
 export function boardIcon(type) {
+  if (_cache[type]) return _cache[type];
   const inner = RAW[type];
   if (!inner) return "";
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
