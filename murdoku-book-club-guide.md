@@ -89,10 +89,16 @@ Different puzzles use different objects. Common ones include:
 | **Garbage can** | A dark cylindrical bin |
 | **Statue** | A small figurine or sculpture shape |
 | **Boulder** | A large round rock, found in outdoor-themed puzzles |
-| **Bear / wildlife** | An animal illustration in outdoor-themed puzzles — treated as an object. Clues reference it like furniture ("beside the bear," "four rows below a bear"). Does not block a row or column. |
+| **Cactus** | A cactus — **cannot be occupied**; blocks its cell |
+| **Shrub** | A bush/shrub — **cannot be occupied**; blocks its cell |
+| **House** | A building icon — **can be occupied**; suspects can be placed in house cells |
+| **Sand** | An open sandy floor tile — **can be occupied** |
+| **Bear / shark / wildlife** | An animal illustration — treated as an object. Clues reference it ("beside the shark," "a shark in her row"). Does not block a row or column. |
 | **Other objects** | Varies by puzzle theme |
 
-All of these objects only matter because clues refer to them. If no clue mentions "garbage can," that object is irrelevant. Focus on what the clues actually say. When in doubt, **hover over a cell** to see its tooltip label.
+All of these objects only matter because clues refer to them. Focus on what the clues actually say. When in doubt, **hover over a cell** to see its tooltip label.
+
+Some puzzles display an explicit **"Can be occupied / Cannot be occupied"** legend in the puzzle layout. If you see this, use it as a definitive reference for which objects block placement.
 
 ### Occupiable vs. Blocked Cells
 
@@ -151,24 +157,38 @@ This means "beside a plant" only counts if the plant is in the very next cell AN
 
 If you hover over the word **"beside"** in a clue card, a tooltip appears: *"to the left, right, up, or down of something, in the same area."*
 
-### Rule 4: Directional Clues — North, South, East, West
+### Rule 4: Directional Clues — Cardinal and Diagonal
 
 Clues can give a direction from one person or object to another:
 
 - **South of** = directly below, same column, next row down.
 - **North of** = directly above, same column, next row up.
-- **East of** = directly to the right, same row, next column to the right.
-- **West of** = directly to the left, same row, next column to the left.
+- **East of** = directly to the right, in the same row.
+- **West of** = directly to the left, in the same row.
+- **Northeast of** = one row up AND one column to the right (diagonal).
+- **Northwest of** = one row up AND one column to the left (diagonal).
+- **Southeast of** = one row down AND one column to the right (diagonal).
+- **Southwest of** = one row down AND one column to the left (diagonal).
 
-No diagonals. The default meaning of "south of," "north of," etc. is **one step** in that direction.
+The default meaning is **one step** in that direction. Some clues specify a larger distance: **"six rows south of [person]"** means exactly six rows below, same column. Distance clues can reference objects too: **"four rows below a bear"** — find all bear cells and calculate which row is four away.
 
-Some clues specify an exact distance: **"exactly one column east of [person]"** means the suspect is in the same row as the referenced person, exactly one column to their right. The distance could also be more than one: "two rows south of" means two rows down, same column.
+### Rule 5: Superlative Position — "Southernmost / Northernmost"
 
-Directional distance clues can also reference **objects** (not just people): **"four rows below a bear"** means the suspect is in a row exactly four rows beneath a bear icon. Scan all the object cells of that type and check which row is exactly N rows away.
+A clue like **"the southernmost person on Town Island"** means: among all suspects placed on Town Island, this one is in the row furthest south (highest row number). No other suspect on that island can be in a row south of (below) them.
 
-If suspect B is "south of" suspect A, B is in the very next row below A in the exact same column.
+Similarly, "northernmost" means the suspect is in the row furthest north (lowest row number) among all suspects in that area. This clue narrows down the suspect's row relative to everyone else on the same island.
 
-### Rule 5: "Only Person" Conditions
+### Rule 6a: "With [Person]" — Same Room Constraint
+
+A clue saying a suspect **"was with [Name]"** means both suspects were in the same room (island/area). This is equivalent to saying they share the same labeled zone on the board.
+
+Combined clues like **"She was with Denise. Both were not beside a tree."** apply the second condition to both suspects simultaneously — neither of them can be beside a tree.
+
+### Rule 6b: "On an Island" — Area Category
+
+Some puzzles have area categories. For example, in an island-themed puzzle, **"on an island"** means the suspect is anywhere in any named island room — as opposed to being in the sea. This is a broad constraint that excludes entire categories of cells without naming a specific room.
+
+### Rule 7: "Only Person" Conditions
 
 A clue like "the only person sitting in a chair" has two parts:
 
@@ -179,31 +199,48 @@ So even if there are multiple chair cells on the board, only one person can occu
 
 Some puzzles extend this to a **category of rooms**: "the only person sitting in any Store" means that across every room labeled as a store, only this one suspect is in a chair. No chair cell in any store room can contain anyone else.
 
-### Rule 6: Room Clues ("in the [Room]")
+**Gender variant:** "The only man on Desert Island" means this suspect is the only male character placed anywhere in Desert Island. All other suspects placed there must be women. This requires knowing each character's gender, which is visible from their portrait.
+
+### Rule 8: Room Clues ("in the [Room]")
 
 If a clue says a suspect "was in the [Room Name]," that suspect's cell must be inside that named room. The room name in the clue will match one of the labeled rooms on the board.
 
 Some clues combine a room with an object: **"sitting in a chair in the Walkway"** means the suspect must be in a chair cell AND that cell must be inside the Walkway room. Both conditions must be true simultaneously.
 
-### Rule 7: "Not Beside" Conditions
+### Rule 9: "Not Beside" Conditions
 
 If a clue says a suspect "was not beside a shelf" (or any object), then none of that suspect's immediately adjacent cells (in the same room) can contain that object.
 
-### Rule 8: "Either...Or" Conditions
+### Rule 10: "Either...Or" Conditions
 
-Some clues give two possible conditions joined by "or" — for example, "she was either beside a shrub or a plant." This means at least one of those conditions must be true: the suspect must be beside a shrub, beside a plant, or beside both. They cannot be beside neither.
+Some clues give two possible conditions joined by "or" — for example, "she was either on Empty or Desert Island." This means the suspect must be in one of those two rooms (or options). They cannot satisfy neither.
 
-### Rule 9: "Beside the [Room] Area"
+### Rule 11: "Beside the [Room] Area"
 
 A clue can say a suspect was beside a **room** rather than an object — for example, "beside the Fountain area." This means the suspect's cell must be directly adjacent (left, right, above, or below) to at least one cell that belongs to that named room. The suspect does not have to be inside the Fountain room — just touching its border.
 
-### Rule 10: "Corner of a [Room]" Conditions
+### Rule 12: "Corner of a [Room]" Conditions
 
-A **corner cell** is a cell inside a room that is surrounded by walls on two of its four sides — meaning two of its neighboring cells are outside the room (either a different room or outside the board). These are the cells tucked into the inner or outer corners of a room's shape.
+A **corner cell** is a cell inside a room that is surrounded by walls on two of its four sides — meaning two of its neighboring cells are outside the room (either a different room or outside the board).
 
-A clue like "not in a corner of a Store" means the suspect cannot be in any corner cell of any store-type room. To apply this, look at each store room and identify which cells are corner cells (they have walls or other rooms on two sides), then eliminate those cells for that suspect.
+A clue like "not in a corner of a Store" means the suspect cannot be in any corner cell of any store-type room.
 
-### Rule 11: "Alone With the Murderer" (the Victim's Clue)
+### Rule 13: Exact Quantity Conditions
+
+Some clues specify an **exact count** of adjacent objects: **"beside exactly two cacti"** means the suspect's cell must be adjacent to precisely two cactus cells — not one, not three, exactly two.
+
+Similarly, count clues can apply to people in a direction: **"exactly two people were south of her"** means exactly two other suspects are placed in rows below that suspect's row (across all columns).
+
+### Rule 14: Area Population Constraints
+
+Some clues describe the number of people in a room or island:
+
+- **"four people island of exactly three women"** — the island where this suspect is placed must have exactly 4 suspects total, of whom exactly 3 are women (and therefore 1 is a man). This requires reasoning about both headcount and gender across the island.
+- **"alone with someone in the sea"** — exactly two people are in the sea area: this suspect and one other unnamed person. This is different from the victim's clue (which implies the murderer); here it just constrains the sea's total population to 2.
+
+General clues can also impose uniqueness: **"every island had a unique number of people (0 is possible)"** means no two islands have the same number of suspects, and an island with zero suspects is allowed.
+
+### Rule 15: "Alone With the Murderer" (the Victim's Clue)
 
 The victim's clue always says they were alone with the murderer. This means:
 
@@ -301,26 +338,33 @@ These are the words that appear in clues and what they mean precisely:
 | Term | Exact Meaning |
 |------|--------------|
 | **beside [object]** | Directly adjacent — one cell to the left, right, above, or below — AND in the same room (not across a wall). Diagonals do not count. |
+| **beside exactly N [objects]** | The suspect's cell must be adjacent to precisely N cells of that object type — not more, not fewer. |
 | **beside the [Room] area** | The suspect's cell is directly adjacent to at least one cell belonging to that named room. The suspect does not need to be inside that room. |
-| **south of** | In the cell directly below, in the same column. |
-| **north of** | In the cell directly above, in the same column. |
-| **east of** | In the cell directly to the right, in the same row. |
-| **west of** | In the cell directly to the left, in the same row. |
-| **exactly N columns east/west of [person]** | In the same row as that person, exactly N columns to their right (east) or left (west). |
+| **south/north/east/west of** | One step in that cardinal direction: same column (south/north) or same row (east/west). |
+| **northeast/northwest/southeast/southwest of** | One step diagonally: northeast = one row up AND one column right, etc. |
+| **exactly N rows/columns [direction] of [person/object]** | The suspect is precisely N steps in that direction from the reference point. |
+| **southernmost/northernmost person on [area]** | Among all suspects placed in that area, this one is in the most extreme row (furthest south or furthest north). |
+| **with [person]** | The suspect is in the same room/island as the named person. |
+| **same island / same area** | Explicitly constrains two suspects to share a room/zone. |
+| **on an island** | The suspect is in any named island area — excludes sea, walkway, or any non-island zone. |
 | **only person [condition]** | No other suspect on the board can satisfy the same condition. |
-| **only person in any [category]** | Across all rooms of that type (e.g. all stores), only this suspect satisfies the condition. |
+| **only [gender] on [area]** | The suspect is the only man (or woman) placed in that room/island. Other suspects there must be of the opposite gender. |
+| **only person in any [category]** | Across all rooms of that type, only this suspect satisfies the condition. |
 | **alone with** | Only the victim and the murderer are placed in that room. No one else. |
+| **alone with someone in [area]** | Exactly two suspects are in that area — this suspect and one other (unnamed). Not the murder clue; just a population constraint of 2. |
 | **in the [Room]** | The suspect's cell is inside the named room (same floor color, same labeled area). |
-| **in the [Room], beside the [Room] area** | Two simultaneous constraints: the suspect must be inside the first room AND adjacent to the second room. |
 | **not beside [object]** | None of the suspect's immediately adjacent cells (same room) contain that object. |
-| **either beside X or Y** | At least one of the two conditions must be true: beside X, beside Y, or beside both. |
-| **corner of a [Room]** | A cell inside the room that has walls or other rooms on two of its four sides — the geometrically "cornered" cells at the edges of a room's shape. |
-| **not in a corner of a [Room/category]** | The suspect cannot be in any corner cell of that room or category of rooms. |
-| **N rows below/above a [object]** | The suspect is in a row exactly N rows beneath or above a specific object (e.g. a bear). Find all cells of that object type and calculate which row is N away. |
-| **[accessory] clues (cap, glasses, etc.)** | Some clues restrict room placement based on what a suspect wears in their portrait. Inspect portraits carefully — if a clue says "everyone here wore glasses," only suspects shown with glasses in their portrait can go there. |
-| **wildlife / bear** | An animal icon on the grid — treated as an object. Referenced in clues like furniture. Does not block a row or column. |
-| **blocked cell** | A cell whose entire space is filled by a large object (e.g. a tree). No suspect can be placed here. |
-| **occupiable cell** | Any cell a suspect can be placed in — open floor, or a cell with a small object like a chair or carpet. |
+| **either [X] or [Y]** | At least one of the two options must be true (rooms, objects, or conditions). |
+| **exactly N people south/north of [suspect]** | Exactly N other suspects are placed in rows below (or above) that suspect's row. |
+| **[N] people island of exactly [M] women** | The island this suspect is on has exactly N suspects total, of whom exactly M are women. |
+| **every [area] had a unique number of people** | No two areas of that type share the same occupant count; 0 is a valid count. |
+| **corner of a [Room]** | A cell inside the room that has walls or other rooms on two of its four sides. |
+| **not in a corner of a [Room/category]** | The suspect cannot be in any corner cell of that room or category. |
+| **N rows below/above a [object]** | Exactly N rows away from a specific object cell type. |
+| **[accessory] clues (cap, glasses, etc.)** | Clues that restrict placement based on what a suspect wears in their portrait. |
+| **wildlife / shark / bear** | An animal icon on the grid — treated as an object. Does not block a row or column. |
+| **blocked cell** | A cell whose entire space is filled by a large object (tree, cactus, shrub, shark). No suspect can be placed here. |
+| **occupiable cell** | Any cell a suspect can be placed in — open floor, sand, house, or cells with small objects. |
 
 ---
 
